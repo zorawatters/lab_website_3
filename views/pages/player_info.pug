@@ -1,0 +1,67 @@
+//- player-info.pug
+include ../partials/header.pug
+include ../partials/menu.pug
+
+div.container
+  br
+  div.row
+    div.col-4
+      div.card
+        //- TODO: Modify the pug code below to conditionally set the image_src
+        - let image_src
+        - if(specific)
+          - console.log(specific.img_src)
+          - image_src = specific.img_src
+        - else
+          - image_src = '../../resources/img/helmet.jpg'
+        - console.log(image_src)
+
+        img.card-img-top#player_img(src= image_src, alt="Football Player")
+        div.card-body.mx-auto
+          form.form(action="/player_info/post", method="get")
+            select.custom-select(name="player_choice", onchange="this.form.submit()")
+              option(selected) Select Player
+              //- TODO: Populate the select with player options. Set the value to the player's id and display the player's name.
+              for player in players
+                option(value=player.id)= player.name
+    div.col-8
+      div.table-responsive
+        table.table
+          //- TODO: Set the player's information. On select, fill in the player's information in each of the field below. You will need to calculate the average rushing, receiving, and passing yards.
+          tr
+            th Year
+            - if(specific)          
+              td= specific.year
+            - else
+              td ?
+          tr
+            th Major
+            - if(specific)          
+              td= specific.major
+            - else
+              td ?
+          tr
+            th Games Played
+            - if(num_games)
+              td= num_games
+            - else
+              td ?
+          tr
+            td Passing Yards:
+            - if(specific && num_games)
+              td Avg. Passing Yards: #{(specific.passing_yards/num_games)}
+            - else
+              td ?
+          tr
+            td Rushing Yards: 
+            - if(specific && num_games)
+              td Avg. Rushing Yards: #{(specific.rushing_yards/num_games)}
+            - else
+              td ?
+          tr
+            td Receiving Yards:
+            - if(specific && num_games)
+              td Avg. Receiving Yards: #{(specific.receiving_yards/num_games)}
+            - else
+              td ?
+include ../partials/footer.pug
